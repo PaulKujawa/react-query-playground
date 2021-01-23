@@ -6,6 +6,7 @@ export interface BookDto {
   pages: number;
   title: string;
   year: number;
+  isbn: string;
 }
 
 export interface Book {
@@ -14,6 +15,7 @@ export interface Book {
   pages: number;
   title: string;
   year: number;
+  isbn: string;
 }
 
 export const mapBookDto = (dto: BookDto): Book => ({

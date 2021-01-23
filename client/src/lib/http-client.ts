@@ -25,13 +25,13 @@ const FetchClient = () => {
 
   const getResponseBody = async function <DTO>(
     response: Response
-  ): Promise<DTO | null> {
+  ): Promise<DTO> {
     if (!response.ok) {
       throw new Error(String(response.status));
     }
 
     if (response.status === 204) {
-      return null;
+      return (null as any) as DTO;
     }
 
     const result = await response.json();
@@ -43,7 +43,7 @@ const FetchClient = () => {
     setAuthToken(value: string) {
       authToken = value;
     },
-    async getData<DTO = unknown>(path: string): Promise<DTO | null> {
+    async getData<DTO = unknown>(path: string): Promise<DTO> {
       const response = await fetch(composeApiUrl(path), {
         headers: getHeaders(),
       });
@@ -51,10 +51,7 @@ const FetchClient = () => {
       return getResponseBody<DTO>(response);
     },
 
-    async postData<DTO = unknown>(
-      path: string,
-      payload: any
-    ): Promise<DTO | null> {
+    async postData<DTO = unknown>(path: string, payload: any): Promise<DTO> {
       const response = await fetch(composeApiUrl(path), {
         method: "POST",
         headers: getHeaders(),
@@ -64,10 +61,7 @@ const FetchClient = () => {
       return getResponseBody<DTO>(response);
     },
 
-    async putData<DTO = unknown>(
-      path: string,
-      payload: any
-    ): Promise<DTO | null> {
+    async putData<DTO = unknown>(path: string, payload: any): Promise<DTO> {
       const response = await fetch(composeApiUrl(path), {
         method: "PUT",
         headers: getHeaders(),
@@ -77,7 +71,7 @@ const FetchClient = () => {
       return getResponseBody<DTO>(response);
     },
 
-    async deleteData<DTO = unknown>(path: string): Promise<DTO | null> {
+    async deleteData<DTO = unknown>(path: string): Promise<DTO> {
       const response = await fetch(composeApiUrl(path), {
         method: "DELETE",
         headers: getHeaders(),

@@ -13,7 +13,9 @@ export function buildQueryParams(queryParams: {
   [key: string]: string | number | boolean | undefined | null;
 }): string {
   const query = Object.entries(queryParams)
-    .filter(([, value]) => value !== undefined && value !== null)
+    .filter(
+      ([, value]) => value !== undefined && value !== null && value !== ""
+    )
     .map(([key, value]) => `${key}=${value}`)
     .join("&");
 

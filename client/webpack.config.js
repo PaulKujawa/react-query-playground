@@ -3,11 +3,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = (env = {}, argv) => {
-    const isDev = argv.mode === 'development';
-    const isTest = argv.mode === 'test';
     const isProd = argv.mode === 'production' || argv.mode === undefined; // prod is default
 
     return {
+        mode: isProd ? 'production' : 'development',
         entry: {
             index: './src/index.tsx'
         },

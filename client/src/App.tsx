@@ -1,27 +1,19 @@
 import React from "react";
-import { useCreateBook, useGetBooks } from "./repositories";
+import "./app.css";
+import { Consumer, Publisher } from "./components";
+import { useUrlSearchParam } from "./hooks";
 
 export const App = () => {
-  const { data } = useGetBooks({ page: 1 });
-  const { mutate: addBook } = useCreateBook();
+  const [page, setPage] = useUrlSearchParam("page");
 
   return (
     <>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-      <button
-        type="button"
-        onClick={() => {
-          addBook({
-            title: "Wuthering Heights",
-            author: "Emily Brontë",
-            pages: 416,
-            country: "England",
-            year: 1847,
-          });
-        }}
-      >
-        Add book
-      </button>
+      <div className="App_header">
+        <button onClick={() => setPage("consumer")}>consumer</button>
+        <button onClick={() => setPage("publisher")}>publisher</button>
+      </div>
+
+      <div>{page === "publisher" ? <Publisher /> : <Consumer />}</div>
     </>
   );
 };

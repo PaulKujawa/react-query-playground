@@ -1,0 +1,8 @@
+.infiniteScrolling_placeholder {
+  margin-bottom: 1.5rem;
+}
+
+.infiniteScrolling_depleted {
+  color: gray;
+  text-align: center;
+}

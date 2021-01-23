@@ -2,20 +2,32 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import books from './data.mjs';
-import {chunkArray} from './utils.mjs';
 
 const app = express()
 const port = 3000
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use((req, res, next) => setTimeout(next, 500));
 
 app.get('/books', (req, res) => {
-    const page = req.query.page || 1;
-    const bookPages = [...chunkArray(books, 5)];
-    const batch = bookPages[page - 1];
+    const limit = 5;
+    const pivotIsbn = req.query.cursor || books[0].isbn;
+    const pivotIdx = books.findIndex(book => book.isbn === pivotIsbn);
 
-    return res.json(batch);
+    if (pivotIdx === -1) {
+        res.status(404);
+        return;
+    }
+    
+    const nextIdx = pivotIdx + limit;
+
+    return res.json({
+        cursor: pivotIsbn,
+        cursor_next: nextIdx < books.length ? books[nextIdx].isbn : null,
+        items: books.slice(pivotIdx, nextIdx),
+        limit,
+    });
 });
 
 app.get('/books/:isbn', (req, res) => {
@@ -27,14 +39,14 @@ app.get('/books/:isbn', (req, res) => {
         return;
     }
     
-    res.status(404).send('Book not found');
+    res.status(404);
 });
 
 
 app.post('/books', (req, res) => {
     const book = req.body;
 
-    books.push(book);
+    books.unshift(book);
 
     res.status(201).json(book);
 });

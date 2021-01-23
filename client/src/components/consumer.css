@@ -1,0 +1,17 @@
+.card {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid grey;
+}
+.card_title {
+  font-weight: bold;
+}
+.card_author {
+  color: gray;
+  margin-bottom: 1rem;
+}
+.card_summary {
+  display: flex;
+  justify-content: space-around;
+  font-size: smaller;
+}

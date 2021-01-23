@@ -1,15 +1,21 @@
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useInfiniteQuery, useMutation, useQueryClient } from "react-query";
+import { Book, BookDto, mapBook, mapBookDto, Paginated } from "../entities";
 import { fetchClient } from "../lib";
-import { mapBookDto, BookDto, Book, mapBook } from "../entities";
 import { buildQueryParams } from "../utils";
 
-export const useGetBooks = (options: { page?: number }) => {
-  return useQuery("books", async () => {
-    const query = buildQueryParams(options);
-    const dtos = await fetchClient.getData<BookDto[]>(`/books?${query}`);
+export const useGetBooks = () => {
+  return useInfiniteQuery(
+    "books",
+    async ({ pageParam }) => {
+      const query = buildQueryParams({ cursor: pageParam });
+      const dto = await fetchClient.getData<Paginated<BookDto>>(
+        `/books?${query}`
+      );
 
-    return dtos!.map(mapBookDto);
-  });
+      return { ...dto, items: dto.items.map(mapBookDto) };
+    },
+    { getNextPageParam: (curr) => curr.cursorNext }
+  );
 };
 
 export const useCreateBook = () => {
@@ -19,7 +25,7 @@ export const useCreateBook = () => {
     async (book: Book) => {
       const dto = await fetchClient.postData<BookDto>("/books", mapBook(book));
 
-      return mapBookDto(dto!);
+      return mapBookDto(dto);
     },
     {
       onSuccess: () => {

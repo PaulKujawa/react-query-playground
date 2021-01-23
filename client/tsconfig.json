@@ -3,11 +3,11 @@
         "allowSyntheticDefaultImports": true,
         "declaration": true,
         "jsx": "react",
-        "lib": ["dom", "ES6"],
+        "lib": ["dom", "ESNext"],
         "module": "esnext",
         "moduleResolution": "node",
         "strict": true,
-        "target": "ES6",
+        "target": "ESNext",
         "outDir": "./dist",
         "baseUrl": "."
     },
