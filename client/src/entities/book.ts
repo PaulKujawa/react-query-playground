@@ -2,28 +2,24 @@ import { formatDateForBe } from "../utils";
 
 export interface BookDto {
   author: string;
-  isbn: number;
-  numOfPages: number;
-  publishDate: string;
-  publisher: string;
+  country: string;
+  pages: number;
   title: string;
+  year: number;
 }
 
 export interface Book {
   author: string;
-  isbn: number;
-  numOfPages: number;
-  publishDate: Date;
-  publisher: string;
+  country: string;
+  pages: number;
   title: string;
+  year: number;
 }
 
 export const mapBookDto = (dto: BookDto): Book => ({
   ...dto,
-  publishDate: new Date(dto.publishDate),
 });
 
 export const mapBook = (book: Book): BookDto => ({
   ...book,
-  publishDate: formatDateForBe(book.publishDate),
 });

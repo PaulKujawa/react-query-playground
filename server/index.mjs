@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import books from './data.mjs';
+import {chunkArray} from './utils.mjs';
 
 const app = express()
 const port = 3000
@@ -10,7 +11,11 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.get('/books', (req, res) => {
-    return res.json(books);
+    const page = req.query.page || 1;
+    const bookPages = [...chunkArray(books, 5)];
+    const batch = bookPages[page - 1];
+
+    return res.json(batch);
 });
 
 app.get('/books/:isbn', (req, res) => {

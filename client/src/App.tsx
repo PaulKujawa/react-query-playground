@@ -2,7 +2,7 @@ import React from "react";
 import { useCreateBook, useGetBooks } from "./repositories";
 
 export const App = () => {
-  const { data } = useGetBooks();
+  const { data } = useGetBooks({ page: 1 });
   const { mutate: addBook } = useCreateBook();
 
   return (
@@ -12,12 +12,11 @@ export const App = () => {
         type="button"
         onClick={() => {
           addBook({
-            isbn: 9780141040356,
             title: "Wuthering Heights",
             author: "Emily Brontë",
-            publishDate: new Date("2008-06-11"),
-            publisher: "Penguin Classics",
-            numOfPages: 416,
+            pages: 416,
+            country: "England",
+            year: 1847,
           });
         }}
       >

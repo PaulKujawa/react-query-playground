@@ -8,3 +8,14 @@ export const formatDateForUi = (date: Date | string) => {
 
   return format(dateObj, "dd.MM.yyyy");
 };
+
+export function buildQueryParams(queryParams: {
+  [key: string]: string | number | boolean | undefined | null;
+}): string {
+  const query = Object.entries(queryParams)
+    .filter(([, value]) => value !== undefined && value !== null)
+    .map(([key, value]) => `${key}=${value}`)
+    .join("&");
+
+  return encodeURI(query);
+}
