@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "declaration": true,
+        "jsx": "react",
+        "lib": ["dom", "ES6"],
+        "module": "esnext",
+        "moduleResolution": "node",
+        "strict": true,
+        "target": "ES6",
+        "outDir": "./dist",
+        "baseUrl": "."
+    },
+    "exclude": ["node_modules"]
+}
