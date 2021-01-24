@@ -1,14 +1,22 @@
-import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import books from './data.mjs';
+import express from 'express';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import {books, newBooks} from './data.mjs';
 
-const app = express()
-const port = 3000
+const app = express();
+const server = createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:8080",
+        methods: ['GET', 'POST']
+    }
+});
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use((req, res, next) => setTimeout(next, 500));
+// app.use((req, res, next) => setTimeout(next, 2000));
 
 app.get('/books', (req, res) => {
     const limit = 5;
@@ -74,4 +82,21 @@ app.delete('/books/:isbn', (req, res) => {
     res.status(204);
 });
 
-app.listen(port, () => console.log(`running on http://localhost:${port}.`));
+io.on('connection', (socket) => {
+    let cnt = 1;
+
+    setTimeout(() => {
+        const interval = setInterval(() => {
+            const handPickedBook = newBooks[Math.floor(Math.random() * newBooks.length)];
+            io.emit('book-added', handPickedBook);
+            
+            if (cnt === 3) clearInterval(interval);
+            cnt++
+        }, 2000)
+    }, 3000)
+    
+    
+    socket.on('disconnect', () => {});
+})
+
+server.listen(3000, () => console.log('running on http://localhost:3000.'));

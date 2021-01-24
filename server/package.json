@@ -8,7 +8,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "naampje": "^1.0.1",
-    "random-name": "^0.1.2"
+    "random-name": "^0.1.2",
+    "socket.io": "^3.1.0"
   },
   "devDependencies": {},
   "scripts": {

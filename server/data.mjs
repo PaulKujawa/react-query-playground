@@ -1,4 +1,4 @@
-export default [
+export const books = [
   {
     "author": "Chinua Achebe",
     "country": "Nigeria",
@@ -286,7 +286,10 @@ export default [
     "title": "The Sound and the Fury",
     "year": 1929,
     "isbn": "3573034081"
-  },
+  }
+];
+
+export const newBooks = [
   {
     "author": "Gustave Flaubert",
     "country": "France",

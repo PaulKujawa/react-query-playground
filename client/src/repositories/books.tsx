@@ -1,6 +1,7 @@
+import React from "react";
 import { useInfiniteQuery, useMutation, useQueryClient } from "react-query";
 import { Book, BookDto, mapBook, mapBookDto, Paginated } from "../entities";
-import { fetchClient } from "../lib";
+import { fetchClient, webSocket } from "../lib";
 import { buildQueryParams } from "../utils";
 
 export const useGetBooks = () => {
@@ -16,6 +17,30 @@ export const useGetBooks = () => {
     },
     { getNextPageParam: (curr) => curr.cursorNext }
   );
+};
+
+/*
+ * react-query cache holds pages with items of books, received from a RESTful endpoint.
+ * Additionally, this app listens to a websocket that sends books added after initial page load.
+ * These books are infititly preprended to the items of the first page.
+ *
+ * It does not handle the scenario when the websocket emits before the RESTful endpoint
+ * as this is product-specific.
+ */
+export const useBooksWebsocket = () => {
+  const queryClient = useQueryClient();
+
+  React.useEffect(() => {
+    webSocket.on("book-added", (dto: BookDto) => {
+      queryClient.setQueryData("books", ({ pages, pageParams }: any) => ({
+        pageParams,
+        pages: [
+          { ...pages[0], items: [mapBookDto(dto), ...pages[0].items] },
+          ...pages.slice(1),
+        ],
+      }));
+    });
+  }, []);
 };
 
 export const useCreateBook = () => {

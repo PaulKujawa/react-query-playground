@@ -1,5 +1,5 @@
 import React from "react";
-import { Book } from "src/entities";
+import { Book } from "../entities";
 import { useCreateBook } from "../repositories";
 
 export const Publisher = () => {

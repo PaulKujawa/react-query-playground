@@ -1,10 +1,11 @@
 import React from "react";
 import { InfiniteScroll } from ".";
-import { useGetBooks } from "../repositories";
+import { useBooksWebsocket, useGetBooks } from "../repositories";
 import "./consumer.css";
 
 export const Consumer = () => {
   const getBookInfo = useGetBooks();
+  useBooksWebsocket();
 
   return (
     <InfiniteScroll
