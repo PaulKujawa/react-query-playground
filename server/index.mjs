@@ -83,16 +83,17 @@ app.delete('/books/:isbn', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-    let cnt = 1;
+    let cnt = 0;
 
     setTimeout(() => {
         const interval = setInterval(() => {
-            const handPickedBook = newBooks[Math.floor(Math.random() * newBooks.length)];
-            io.emit('book-added', handPickedBook);
+            const randomIdx = Math.floor(Math.random() * newBooks.length);
+            const [randomBook] = newBooks.splice(randomIdx, 1);
+            io.emit('book-added', randomBook);
             
-            if (cnt === 3) clearInterval(interval);
+            if (cnt === newBooks.length - 1) clearInterval(interval);
             cnt++
-        }, 2000)
+        }, 1500 + Math.random() * 6000)
     }, 3000)
     
     

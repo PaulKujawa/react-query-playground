@@ -1,17 +1,28 @@
-.card {
+.consumer_card {
   padding: 1rem;
   margin-bottom: 1rem;
   border: 1px solid grey;
 }
-.card_title {
+.consumer_card_title {
   font-weight: bold;
 }
-.card_author {
+.consumer_card_author {
   color: gray;
   margin-bottom: 1rem;
 }
-.card_summary {
+.consumer_card_summary {
   display: flex;
   justify-content: space-around;
   font-size: smaller;
+}
+
+.consumer_flush {
+  position: fixed;
+  top: 30px;
+  left: 0;
+  right: 0;
+  padding: 0.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  background: rgb(0, 211, 211);
 }

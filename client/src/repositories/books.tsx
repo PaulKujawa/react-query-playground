@@ -29,18 +29,26 @@ export const useGetBooks = () => {
  */
 export const useBooksWebsocket = () => {
   const queryClient = useQueryClient();
+  const [buffer, setBuffer] = React.useState<Book[]>([]);
 
   React.useEffect(() => {
     webSocket.on("book-added", (dto: BookDto) => {
-      queryClient.setQueryData("books", ({ pages, pageParams }: any) => ({
-        pageParams,
-        pages: [
-          { ...pages[0], items: [mapBookDto(dto), ...pages[0].items] },
-          ...pages.slice(1),
-        ],
-      }));
+      setBuffer((acc) => [mapBookDto(dto), ...acc]);
     });
   }, []);
+
+  const flushBuffer = () => {
+    queryClient.setQueryData("books", ({ pages, pageParams }: any) => ({
+      pageParams,
+      pages: [
+        { ...pages[0], items: buffer.concat(pages[0].items) },
+        ...pages.slice(1),
+      ],
+    }));
+    setBuffer([]);
+  };
+
+  return [buffer.length, flushBuffer] as const;
 };
 
 export const useCreateBook = () => {
