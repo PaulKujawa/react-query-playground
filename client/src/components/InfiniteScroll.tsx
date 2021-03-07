@@ -1,5 +1,4 @@
 import React from "react";
-import { useIntersectionObserver } from "../hooks";
 import "./infiniteScroll.css";
 
 interface Props {
@@ -8,6 +7,35 @@ interface Props {
   fetchMore: () => void;
   children: React.ReactChild;
 }
+
+export const useIntersectionObserver = ({
+  target,
+  enabled,
+  onIntersect,
+  root,
+  rootMargin,
+  threshold,
+}: IntersectionObserverInit & {
+  target: React.MutableRefObject<Element | null>;
+  enabled: boolean;
+  onIntersect: () => void;
+}) => {
+  React.useEffect(() => {
+    if (!target.current || !enabled) return;
+
+    const intersectionObserver = new IntersectionObserver(
+      ([entry]) => entry.isIntersecting && onIntersect(),
+      { root, rootMargin, threshold }
+    );
+
+    const elem = target.current;
+    intersectionObserver.observe(elem);
+
+    return () => {
+      intersectionObserver.unobserve(elem);
+    };
+  }, [target, enabled, onIntersect, root, rootMargin, threshold]);
+};
 
 export const InfiniteScroll = ({
   canFetchMore,

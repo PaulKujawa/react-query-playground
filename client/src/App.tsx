@@ -1,19 +1,32 @@
 import React from "react";
 import "./app.css";
 import { Consumer, Publisher } from "./components";
-import { useUrlSearchParam } from "./hooks";
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 export const App = () => {
-  const [page, setPage] = useUrlSearchParam("page");
-
   return (
-    <>
+    <BrowserRouter>
       <div className="App_header">
-        <button onClick={() => setPage("consumer")}>consumer</button>
-        <button onClick={() => setPage("publisher")}>publisher</button>
+        <Link to="/consumer">consumer</Link>
+        <Link to="/publisher">publisher</Link>
       </div>
 
-      <div>{page === "publisher" ? <Publisher /> : <Consumer />}</div>
-    </>
+      <Switch>
+        <Route path="/consumer">
+          <Consumer />
+        </Route>
+        <Route path="/publisher">
+          <Publisher />
+        </Route>
+        <Route path="/">
+          <Consumer />
+        </Route>
+      </Switch>
+    </BrowserRouter>
   );
 };
